@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+// This is the example of the proto file for GRPC endpoints that will be consumed by this micro service
+// The endpoints are defined in the service we'll be calling
+// This won't need any file in the grpc folder
+
+package consumedService;
+
+import "google/protobuf/empty.proto";
+
+// Specify the Go package for the generated code
+option go_package = "/proto/gen;gen";
+
+service ConsumedModel2GRPCService {
+
+
+
+    rpc testClientCall (TestClientCallRequest) returns (TestClientCallResponse){
+    }
+
+    rpc testClientCallReturnsEmpty (TestClientReturnsEmptyRequest) returns (google.protobuf.Empty) {
+    }
+
+}
+message TestClientCallRequest {
+    string userId = 1;
+    string otherField = 2;
+}
+
+message TestClientCallResponse{
+    string userId = 1;
+}
+
+message TestClientReturnsEmptyRequest {
+    string userId = 1;
+}
+
+
