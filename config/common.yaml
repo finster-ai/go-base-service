@@ -1,0 +1,4 @@
+# config/common.yaml
+app:
+    name: "go-base-service"
+    version: "1.0.0"

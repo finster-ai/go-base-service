@@ -6,6 +6,8 @@ require (
 	github.com/asim/go-micro/plugins/broker/kafka/v3 v3.7.0
 	github.com/asim/go-micro/v3 v3.7.1
 	github.com/go-micro/plugins/v4/server/grpc v1.2.0
+	github.com/go-micro/plugins/v4/server/http v1.2.2
+	github.com/gorilla/mux v1.8.0
 	github.com/graphql-go/graphql v0.8.1
 	github.com/graphql-go/handler v0.2.4
 	go-micro.dev/v4 v4.11.0
