@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"strings"
 
@@ -57,12 +58,25 @@ func (c NestedConfig) GetString(keyPath string) string {
 		log.Printf("String value not found for key: %s", keyPath)
 		return ""
 	}
+
+	// First, try to assert the value is already a string
 	strValue, ok := value.(string)
-	if !ok {
-		log.Printf("Expected string but got %T for key: %s", value, keyPath)
+	if ok {
+		return strValue
+	}
+
+	// If it's not a string, attempt to convert it to a string
+	switch v := value.(type) {
+	case int:
+		return fmt.Sprintf("%d", v)
+	case float64:
+		return fmt.Sprintf("%f", v)
+	case bool:
+		return fmt.Sprintf("%t", v)
+	default:
+		log.Printf("Unable to convert value of type %T to string for key: %s", value, keyPath)
 		return ""
 	}
-	return strValue
 }
 
 // Other methods (GetInt, GetStringSlice, GetStringMap) remain the same...

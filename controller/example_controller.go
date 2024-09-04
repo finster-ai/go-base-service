@@ -3,6 +3,7 @@ package controller
 import (
 	"encoding/json"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/gorilla/mux"
@@ -10,10 +11,15 @@ import (
 	"go-base-service/service"
 )
 
-var itemService *service.ItemService // Declare a variable to hold the injected service
+var (
+	itemService *service.ItemService
+	once        sync.Once // To ensure the service is only initialized once
+)
 
-func NewItemService() {
-	itemService = NewItemService()
+func InitController() {
+	once.Do(func() {
+		itemService = service.NewItemService() // Initialize ItemService here
+	})
 }
 
 func GetItem(w http.ResponseWriter, r *http.Request) {

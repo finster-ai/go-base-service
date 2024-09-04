@@ -107,7 +107,7 @@ func setupAPIService() micro.Service {
 	// Set up the HTTP service
 	apiServer := httpServer.NewServer(
 		server.Name(SERVER_NAME),
-		server.Address(API_PORT),
+		server.Address(":"+API_PORT),
 	)
 	apiService := micro.NewService(
 		micro.Server(apiServer),
@@ -125,6 +125,9 @@ func setupAPIService() micro.Service {
 
 func setupRouter() *mux.Router {
 	router := mux.NewRouter()
+
+	// Initialize the controller and its dependencies
+	controller.InitController()
 
 	// Define REST API endpoints using the controller package
 	router.HandleFunc("/items/{id}", controller.GetItem).Methods("GET")
