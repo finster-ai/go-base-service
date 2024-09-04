@@ -1,10 +1,21 @@
 package service
 
 import (
+	"go-base-service/dao/mongodb"
 	"go-base-service/model"
 )
 
 var items = make(map[string]model.Item)
+
+type ItemService struct {
+	dao *mongodb.ItemDAO
+}
+
+// NewItemService initializes the ItemService with necessary setup
+func NewItemService() *ItemService {
+	itemDAO := mongodb.NewItemDAO()
+	return &ItemService{dao: itemDAO}
+}
 
 func init() {
 	var item2 = model.Item{

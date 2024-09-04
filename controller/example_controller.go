@@ -10,6 +10,12 @@ import (
 	"go-base-service/service"
 )
 
+var itemService *service.ItemService // Declare a variable to hold the injected service
+
+func NewItemService() {
+	itemService = NewItemService()
+}
+
 func GetItem(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]

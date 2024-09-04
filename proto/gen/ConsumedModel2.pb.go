@@ -6,7 +6,7 @@
 
 // This is the example of the proto file for GRPC endpoints that will be consumed by this micro service
 // The endpoints are defined in the service we'll be calling
-// This won't need any file in the grpcHandler folder
+// This won't need any file in the grpc_handler folder
 
 package gen
 

@@ -7,7 +7,7 @@
 // This is the example of the proto file for the GRPC endpoints that will be exposed by this micro service
 // The endpoints and messages are defined here, if another service needs to call any of these GRPC endpoints
 // it will need to import this proto file
-//The logic of theses endpoints will be implemented in the grpcHandler folder, for this example in the BaseModel1GRPCService class
+//The logic of theses endpoints will be implemented in the grpc_handler folder, for this example in the BaseModel1GRPCService class
 
 package gen
 

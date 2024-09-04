@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
-	"go-base-service/grpcHandler"
+	//"github.com/go-git/go-git/v5/config"
+	"go-base-service/config"
+	"go-base-service/grpc_handler"
 	"log"
 
 	"github.com/go-micro/plugins/v4/server/grpc"
@@ -16,11 +18,28 @@ import (
 	"go-micro.dev/v4/server"
 )
 
-const (
-	SERVER_NAME = "goBaseServer" // server name
-)
+//const (
+//	SERVER_NAME = "goBaseServer" // server name
+//)
+
+var SERVER_NAME string
+var API_PORT string
+var GRPC_PORT string
 
 func main() {
+	// Load the configuration file
+	config.LoadConfig("config/config_local.yaml") // Adjust the path to your config file
+	SERVER_NAME = config.AppConfig.GetString("app.name")
+	API_PORT = config.AppConfig.GetString("server.port")
+	GRPC_PORT = config.AppConfig.GetString("grpc.port")
+
+	//mongoURI := config.AppConfig.GetString("persistence.mongodb.uri")
+	//// Initialize MongoDB connection
+	//mongodb.ConnectMongoDB(mongoURI)
+	//
+	//// Example usage of DAO with the database name
+	//itemDAO := mongodb.NewItemDAOWithDB(dbName)
+
 	// Set up the gRPC service
 	grpcService := setupGRPCService()
 	// Set up the HTTP API service
@@ -63,13 +82,11 @@ func main() {
 // for each annotation in controller
 // hacer una linea como la de abajo
 
-// router.HandleFunc("/items/{id}", controller.GetItem).Methods("GET")
-
 func setupGRPCService() micro.Service {
 
 	grpcServer := grpc.NewServer(
 		server.Name(SERVER_NAME),
-		server.Address(":6585"),
+		server.Address(GRPC_PORT),
 	)
 	service := micro.NewService(
 		micro.Server(grpcServer),
@@ -78,7 +95,7 @@ func setupGRPCService() micro.Service {
 	service.Init()
 
 	// Register GRPC Handlers
-	pb.RegisterBaseModel1GRPCServiceHandler(service.Server(), grpcHandler.New())
+	pb.RegisterBaseModel1GRPCServiceHandler(service.Server(), grpc_handler.New())
 
 	return service
 }
@@ -90,7 +107,7 @@ func setupAPIService() micro.Service {
 	// Set up the HTTP service
 	apiServer := httpServer.NewServer(
 		server.Name(SERVER_NAME),
-		server.Address(":8081"),
+		server.Address(API_PORT),
 	)
 	apiService := micro.NewService(
 		micro.Server(apiServer),
