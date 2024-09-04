@@ -2,43 +2,36 @@ package main
 
 import (
 	"fmt"
-	//"github.com/go-git/go-git/v5/config"
-	"go-base-service/config"
-	"go-base-service/grpc_handler"
-	"log"
-
 	"github.com/go-micro/plugins/v4/server/grpc"
 	httpServer "github.com/go-micro/plugins/v4/server/http"
 	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
+
+	//"github.com/go-git/go-git/v5/config"
+	"go-base-service/config"
 	"go-base-service/controller"
 	"go-base-service/graphql"
+	"go-base-service/grpc_handler"
 	pb "go-base-service/proto/gen"
 	"go-micro.dev/v4"
 	"go-micro.dev/v4/registry"
 	"go-micro.dev/v4/server"
+	"log"
 )
-
-//const (
-//	SERVER_NAME = "goBaseServer" // server name
-//)
 
 var SERVER_NAME string
 var API_PORT string
 var GRPC_PORT string
 
 func main() {
+	logrus.SetLevel(logrus.DebugLevel)
+	printTestLogs()
+
 	// Load the configuration file
 	config.LoadConfig("config/config_local.yaml") // Adjust the path to your config file
 	SERVER_NAME = config.AppConfig.GetString("app.name")
 	API_PORT = config.AppConfig.GetString("server.port")
 	GRPC_PORT = config.AppConfig.GetString("grpc.port")
-
-	//mongoURI := config.AppConfig.GetString("persistence.mongodb.uri")
-	//// Initialize MongoDB connection
-	//mongodb.ConnectMongoDB(mongoURI)
-	//
-	//// Example usage of DAO with the database name
-	//itemDAO := mongodb.NewItemDAOWithDB(dbName)
 
 	// Set up the gRPC service
 	grpcService := setupGRPCService()
@@ -135,4 +128,13 @@ func setupRouter() *mux.Router {
 	router.HandleFunc("/items/{id}", controller.DeleteItem).Methods("DELETE")
 
 	return router
+}
+
+func printTestLogs() {
+	logrus.Debug("This is a DEBUG message.")
+	logrus.Info("This is an INFO message.")
+	logrus.Warn("This is a WARNING message.")
+	logrus.Error("This is an ERROR message.")
+	logrus.WithField("level", "CRITICAL").Error("This is a CRITICAL message.")
+	//logrus.Fatal("This is a CRITICAL message.") // logrus.Fatal exits the program after logging
 }

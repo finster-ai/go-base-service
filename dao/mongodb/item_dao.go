@@ -27,7 +27,13 @@ func (dao *ItemDAO) Insert(item model.Item) (*mongo.InsertOneResult, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	result, err := dao.collection.InsertOne(ctx, item)
+	// Set MongoDB's _id to the item's id
+	doc := bson.M{
+		"_id":  item.ID, // Use the item's ID as the MongoDB _id
+		"name": item.Name,
+	}
+
+	result, err := dao.collection.InsertOne(ctx, doc)
 	return result, err
 }
 
@@ -35,7 +41,7 @@ func (dao *ItemDAO) FindByID(id string) (*model.Item, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	filter := bson.M{"id": id}
+	filter := bson.M{"_id": id}
 	var item model.Item
 	err := dao.collection.FindOne(ctx, filter).Decode(&item)
 	if err != nil {

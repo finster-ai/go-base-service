@@ -26,7 +26,7 @@ func GetItem(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	item, exists := service.FindItem(id)
+	item, exists := itemService.FindItem(id)
 	if !exists {
 		generateErrorResponse(w, http.StatusNotFound, "Item not found", 404)
 		return
@@ -52,7 +52,7 @@ func CreateItem(w http.ResponseWriter, r *http.Request) {
 		Name: itemRequest.Name,
 	}
 
-	createdItem := service.AddItem(item)
+	createdItem := itemService.AddItem(item)
 
 	responseData := model.ItemResponse{
 		ID:   createdItem.ID,
@@ -66,7 +66,7 @@ func DeleteItem(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	if !service.RemoveItem(id) {
+	if !itemService.RemoveItem(id) {
 		generateErrorResponse(w, http.StatusNotFound, "Item not found", 404)
 		return
 	}

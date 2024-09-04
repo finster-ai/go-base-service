@@ -27,8 +27,16 @@ func ConnectMongoDB(uri string) {
 	MongoClient = client
 }
 
-// GetCollection returns a MongoDB collection from the specified database and collection name
+//// GetCollection returns a MongoDB collection from the specified database and collection name
+//func GetCollection(collectionName string) *mongo.Collection {
+//	dbName := config.AppConfig.GetString("persistence.mongodb.name") // Retrieve the dbName from the config
+//	return MongoClient.Database(dbName).Collection(collectionName)
+//}
+
 func GetCollection(collectionName string) *mongo.Collection {
-	dbName := config.AppConfig.GetString("persistence.mongodb.name") // Retrieve the dbName from the config
+	dbName := config.AppConfig.GetString("persistence.mongodb.name")
+	if MongoClient == nil {
+		log.Fatalf("MongoClient is not initialized!")
+	}
 	return MongoClient.Database(dbName).Collection(collectionName)
 }
