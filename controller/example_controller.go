@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"sync"
 	"time"
@@ -23,11 +24,13 @@ func InitController() {
 }
 
 func GetItem(w http.ResponseWriter, r *http.Request) {
+	logrus.Info("/items API Endpoint Reached")
 	vars := mux.Vars(r)
 	id := vars["id"]
 
 	item, exists := itemService.FindItem(id)
 	if !exists {
+		logrus.Error("ExampleCallReturnsEmpty GRPC Endpoint Reached")
 		generateErrorResponse(w, http.StatusNotFound, "Item not found", 404)
 		return
 	}

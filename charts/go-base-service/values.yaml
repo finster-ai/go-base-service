@@ -1,0 +1,72 @@
+replicaCount: 1
+
+image:
+  repository: us-central1-docker.pkg.dev/finster-ops/registry-docker/go-base-service
+  pullPolicy: IfNotPresent
+  tag: latest
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: false
+  automount: true
+  annotations:
+#    iam.gke.io/gcp-service-account: go-base-service@finster-dev.iam.gserviceaccount.com
+  name: "data-feed"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+
+service:
+  enabled: false
+#  type: ClusterIP
+#  port: 8080
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+#livenessProbe:
+#  httpGet:
+#    path: /
+#    port: http
+#readinessProbe:
+#  httpGet:
+#    path: /
+#    port: http
+
+autoscaling:
+  enabled: false
+#  minReplicas: 1
+#  maxReplicas: 100
+#  targetCPUUtilizationPercentage: 80
+#  # targetMemoryUtilizationPercentage: 80
+
+volumes: []
+
+volumeMounts: []
+
+nodeSelector:
+  cloud.google.com/gke-nodepool: app
+
+tolerations:
+    - key: "workload"
+      operator: "Equal"
+      value: "app"
+      effect: "NoExecute"
+
+affinity: {}
+
+#config:
+#  FLASK_ENV: ""

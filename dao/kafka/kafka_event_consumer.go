@@ -6,6 +6,8 @@ import (
 	"log"
 )
 
+//TODO - UN CONSUMER solo CON UN CASE DEPENDIENDO LA COLA, EL MENSAJE LO TRANSFORMA EN UN OBJETO AL CONSUMIRLO
+
 func ConsumeMessages(topic string) {
 	brk := kafka.NewBroker()
 	if err := brk.Connect(); err != nil {

@@ -6,8 +6,8 @@ import (
 	"log"
 )
 
-const TopicProduceMessageExample1 = " Produce.Example1"
-const TopicProduceMessageExample2 = " Produce.Example2"
+const TopicProduceMessageExample1 = " TopicNameProduce.Example1"
+const TopicProduceMessageExample2 = " TopicNameProduce.Example2"
 
 // PublishWhateverExample1 Starts with a capital letter because it's a public function
 func PublishWhateverExample1(message []byte) {

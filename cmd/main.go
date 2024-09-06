@@ -79,7 +79,7 @@ func setupGRPCService() micro.Service {
 
 	grpcServer := grpc.NewServer(
 		server.Name(SERVER_NAME),
-		server.Address(GRPC_PORT),
+		server.Address(":"+GRPC_PORT),
 	)
 	service := micro.NewService(
 		micro.Server(grpcServer),

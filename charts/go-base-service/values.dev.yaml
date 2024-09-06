@@ -1,0 +1,7 @@
+replicaCount: 1
+
+image:
+  tag: $(TAG) # This will be replaced by the CI/CD pipeline
+
+#config:
+#  FLASK_ENV: "development"
