@@ -1,15 +1,15 @@
-package controller
+package http
 
 import (
 	"encoding/json"
 	"github.com/sirupsen/logrus"
+	model2 "go-base-service/internal/model"
+	"go-base-service/internal/service"
 	"net/http"
 	"sync"
 	"time"
 
 	"github.com/gorilla/mux"
-	"go-base-service/model"
-	"go-base-service/service"
 )
 
 var (
@@ -35,7 +35,7 @@ func GetItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	responseData := model.ItemResponse{
+	responseData := model2.ItemResponse{
 		ID:   item.ID,
 		Name: item.Name,
 	}
@@ -44,20 +44,20 @@ func GetItem(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateItem(w http.ResponseWriter, r *http.Request) {
-	var itemRequest model.ItemRequest
+	var itemRequest model2.ItemRequest
 	if err := json.NewDecoder(r.Body).Decode(&itemRequest); err != nil {
 		generateErrorResponse(w, http.StatusBadRequest, err.Error(), 400)
 		return
 	}
 
-	item := model.Item{
+	item := model2.Item{
 		ID:   itemRequest.ID, // Placeholder: Replace with actual ID generation logic
 		Name: itemRequest.Name,
 	}
 
 	createdItem := itemService.AddItem(item)
 
-	responseData := model.ItemResponse{
+	responseData := model2.ItemResponse{
 		ID:   createdItem.ID,
 		Name: createdItem.Name,
 	}
@@ -87,7 +87,7 @@ func generateSuccessResponse(w http.ResponseWriter, data interface{}, queryID st
 	}
 	w.WriteHeader(statusCode)
 
-	response := model.ApiResponse[interface{}]{
+	response := model2.ApiResponse[interface{}]{
 		Timestamp: time.Now().Format(time.RFC3339),
 		QueryID:   queryID,
 		UserID:    "user@example.com", // Placeholder: Replace with actual user ID logic
@@ -102,8 +102,8 @@ func generateSuccessResponse(w http.ResponseWriter, data interface{}, queryID st
 func generateErrorResponse(w http.ResponseWriter, statusCode int, message string, code int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
-	errorResponse := model.ApiErrorResponse{
-		Errors: []model.ErrorDetail{
+	errorResponse := model2.ApiErrorResponse{
+		Errors: []model2.ErrorDetail{
 			{
 				Code:    code,
 				Message: message,

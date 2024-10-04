@@ -6,12 +6,12 @@ import (
 	httpServer "github.com/go-micro/plugins/v4/server/http"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
+	"go-base-service/api/graphql"
+	grpc2 "go-base-service/api/grpc"
+	"go-base-service/api/http"
+	server2 "go-base-service/internal/server"
+	"go-base-service/pkg/config"
 
-	//"github.com/go-git/go-git/v5/config"
-	"go-base-service/config"
-	"go-base-service/controller"
-	"go-base-service/graphql"
-	"go-base-service/grpc_handler"
 	pb "go-base-service/proto/gen"
 	"go-micro.dev/v4"
 	"go-micro.dev/v4/registry"
@@ -88,7 +88,7 @@ func setupGRPCService() micro.Service {
 	service.Init()
 
 	// Register GRPC Handlers
-	pb.RegisterBaseModel1GRPCServiceHandler(service.Server(), grpc_handler.New())
+	pb.RegisterBaseModel1GRPCServiceHandler(service.Server(), grpc2.New())
 
 	return service
 }
@@ -109,7 +109,7 @@ func setupAPIService() micro.Service {
 	apiService.Init()
 
 	// Register the custom handler with the HTTP server
-	if err := apiServer.Handle(newMuxHandler("muxHandler", router)); err != nil {
+	if err := apiServer.Handle(server2.newMuxHandler("muxHandler", router)); err != nil {
 		log.Fatalf("Failed to register handler: %v", err)
 	}
 
@@ -120,12 +120,12 @@ func setupRouter() *mux.Router {
 	router := mux.NewRouter()
 
 	// Initialize the controller and its dependencies
-	controller.InitController()
+	http.InitController()
 
 	// Define REST API endpoints using the controller package
-	router.HandleFunc("/items/{id}", controller.GetItem).Methods("GET")
-	router.HandleFunc("/items", controller.CreateItem).Methods("POST")
-	router.HandleFunc("/items/{id}", controller.DeleteItem).Methods("DELETE")
+	router.HandleFunc("/items/{id}", http.GetItem).Methods("GET")
+	router.HandleFunc("/items", http.CreateItem).Methods("POST")
+	router.HandleFunc("/items/{id}", http.DeleteItem).Methods("DELETE")
 
 	return router
 }

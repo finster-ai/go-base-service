@@ -2,9 +2,9 @@ package service
 
 import (
 	"github.com/sirupsen/logrus"
-	"go-base-service/config"
-	"go-base-service/dao/mongodb"
-	"go-base-service/model"
+	"go-base-service/internal/model"
+	mongodb2 "go-base-service/internal/repository/mongodb"
+	"go-base-service/pkg/config"
 	"sync"
 )
 
@@ -15,15 +15,15 @@ var (
 )
 
 type ItemService struct {
-	dao *mongodb.ItemDAO
+	dao *mongodb2.ItemDAO
 }
 
 func NewItemService() *ItemService {
 	once.Do(func() {
 		// Initialize MongoDB connection inside ItemService initialization
 		mongoURI := config.AppConfig.GetString("persistence.mongodb.uri")
-		mongodb.ConnectMongoDB(mongoURI)
-		itemDAO := mongodb.NewItemDAO()
+		mongodb2.ConnectMongoDB(mongoURI)
+		itemDAO := mongodb2.NewItemDAO()
 
 		itemService = &ItemService{
 			dao: itemDAO,

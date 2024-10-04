@@ -2,9 +2,9 @@ package mongodb
 
 import (
 	"context"
+	"go-base-service/internal/model"
 	"time"
 
-	"go-base-service/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )

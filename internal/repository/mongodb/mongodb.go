@@ -2,7 +2,7 @@ package mongodb
 
 import (
 	"context"
-	"go-base-service/config"
+	"go-base-service/pkg/config"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
